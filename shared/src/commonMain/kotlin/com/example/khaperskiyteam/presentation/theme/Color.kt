@@ -2,16 +2,36 @@ package com.example.khaperskiyteam.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
-val TeamRed = Color(0xFFE50914)
-val TeamDarkRed = Color(0xFFB9000A)
+object KTColors {
 
-val Background = Color(0xFF101012)
-val Surface = Color(0xFF1C1C1F)
-val SurfaceLight = Color(0xFF29292D)
+    // Brand
+    val Red = Color(0xFFE50914)
+    val RedDark = Color(0xFFB9000A)
+    val RedLight = Color(0xFFFF3540)
 
-val White = Color(0xFFFFFFFF)
-val Gray = Color(0xFF929297)
-val LightGray = Color(0xFFD5D5D8)
+    // Background
+    val Background = Color(0xFF101114)
+    val Surface = Color(0xFF191A1E)
+    val SurfaceVariant = Color(0xFF24252A)
+    val Card = Color(0xFF292A2F)
 
-val Success = Color(0xFF35B56A)
-val Error = Color(0xFFFF5252)
+    // Text
+    val White = Color(0xFFFFFFFF)
+    val TextPrimary = Color(0xFFFFFFFF)
+    val TextSecondary = Color(0xFFA6A6AA)
+    val TextDisabled = Color(0xFF68686D)
+
+    // Borders
+    val Border = Color(0xFF393A40)
+    val BorderFocused = Color(0xFFE50914)
+
+    // Status
+    val Success = Color(0xFF32B768)
+    val Warning = Color(0xFFFFB547)
+    val Error = Color(0xFFE50914)
+    val Info = Color(0xFF4285F4)
+
+    // Other
+    val Black = Color(0xFF000000)
+    val Transparent = Color.Transparent
+}
