@@ -1,5 +1,7 @@
 package com.example.khaperskiyteam.data.repository
 
+import com.example.khaperskiyteam.data.model.UserDto
+import com.example.khaperskiyteam.data.model.UserRole
 import com.example.khaperskiyteam.data.supabase.SupabaseProvider
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.from
@@ -26,7 +28,7 @@ class ProfileRepository {
 
     suspend fun getRole(
         roleId: Int
-    ): Result<RoleDto> = runCatching {
+    ): Result<UserRole> = runCatching {
 
         client.from("roles")
             .select {
@@ -34,7 +36,7 @@ class ProfileRepository {
                     eq("id", roleId)
                 }
             }
-            .decodeSingle<RoleDto>()
+            .decodeSingle<UserRole>()
     }
 
     suspend fun getBelt(

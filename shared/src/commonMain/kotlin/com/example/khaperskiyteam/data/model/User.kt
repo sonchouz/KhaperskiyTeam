@@ -7,7 +7,7 @@ enum class UserRole {
     ADMIN
 }
 
-data class User(
+data class UserDto(
     val id: String = "",
     val firstName: String,
     val lastName: String,
