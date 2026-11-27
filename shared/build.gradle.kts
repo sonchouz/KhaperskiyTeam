@@ -51,14 +51,15 @@ kotlin {
             implementation(libs.compose.ui)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.ui.tooling.preview)
-            implementation(libs.compose.material.icons.extended)
+            // Material Icons Core
+            implementation(libs.compose.material.icons)
 
             // Lifecycle
             implementation(libs.androidx.lifecycle.viewmodel.compose)
             implementation(libs.androidx.lifecycle.runtime.compose)
 
             // Navigation
-            implementation(libs.androidx.navigation.compose)
+            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.10.0-rc01")
 
             // Supabase
             implementation(libs.supabase.auth)
