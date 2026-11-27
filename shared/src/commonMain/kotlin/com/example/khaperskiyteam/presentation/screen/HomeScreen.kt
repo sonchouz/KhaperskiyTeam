@@ -1,109 +1,168 @@
 package com.example.khaperskiyteam.presentation.screen
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.Gray
-import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun HomeScreen(
-    role: UserRole,
-    onNavigate: (String) -> Unit
+    athleteRepository: AthleteRepository,
+    membershipRepository: MembershipRepository,
+    eventRepository: EventRepository,
+    onMemberships: () -> Unit,
+    onAthletes: () -> Unit,
+    onEvents: () -> Unit
 ) {
+
+    var athletesCount by remember {
+        mutableStateOf<Int?>(null)
+    }
+
+    var membershipsCount by remember {
+        mutableStateOf<Int?>(null)
+    }
+
+    var eventsCount by remember {
+        mutableStateOf<Int?>(null)
+    }
+
+    LaunchedEffect(Unit) {
+
+        athleteRepository.getAthletes()
+            .onSuccess {
+                athletesCount = it.size
+            }
+
+        membershipRepository.getMemberships()
+            .onSuccess {
+                membershipsCount = it.size
+            }
+
+        eventRepository.getEvents()
+            .onSuccess {
+                eventsCount = it.size
+            }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Background)
             .verticalScroll(rememberScrollState())
-            .padding(20.dp)
+            .padding(16.dp),
+
+        verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        Text("KHAPERSKIY TEAM", color = TeamRed)
-
-        Spacer(Modifier.height(20.dp))
-
-        ScreenTitle("Твоя команда. Твой путь.")
 
         Text(
-            "Команда бразильского джиу-джитсу",
-            color = Gray
+            text = "KHAPERSKIY TEAM",
+            color = KTColors.Primary,
+            style = MaterialTheme.typography.headlineLarge
         )
 
-        Spacer(Modifier.height(24.dp))
+        Text(
+            text = "О НАШЕЙ КОМАНДЕ",
+            style = MaterialTheme.typography.headlineMedium
+        )
 
-        TeamCard {
-            Text("О команде", color = White)
-            Spacer(Modifier.height(8.dp))
+        KTCard {
+
             Text(
-                "Khaperskiy Team объединяет спортсменов, " +
-                        "которые развиваются и достигают новых побед.",
-                color = Gray
+                text = "Khaperskiy Team",
+                style = MaterialTheme.typography.titleLarge
             )
-            Spacer(Modifier.height(12.dp))
-            Text("30+ спортсменов", color = TeamRed)
-            Text("Тренер: Антон Хаперский", color = White)
+
+            Spacer(Modifier.height(8.dp))
+
+            Text(
+                text = "Спортивная команда по бразильскому джиу-джитсу."
+            )
         }
 
-        Spacer(Modifier.height(24.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
 
-        ScreenTitle("Ближайшие тренировки")
+            StatisticCard(
+                value = athletesCount?.toString() ?: "—",
+                label = "Публичных спортсменов",
+                modifier = Modifier.weight(1f)
+            )
 
-        DemoData.trainings.take(2).forEach { training ->
-            Spacer(Modifier.height(12.dp))
-            TeamCard {
-                Text(training.title, color = TeamRed)
-                Text(training.date, color = White)
-                Text(training.time, color = White)
-                Text("Тренер: ${training.coach}", color = Gray)
-                Text(
-                    "Свободно мест: ${training.availablePlaces}",
-                    color = Gray
-                )
-            }
+            StatisticCard(
+                value = membershipsCount?.toString() ?: "—",
+                label = "Абонементов",
+                modifier = Modifier.weight(1f)
+            )
+
+            StatisticCard(
+                value = eventsCount?.toString() ?: "—",
+                label = "Событий",
+                modifier = Modifier.weight(1f)
+            )
         }
 
-        Spacer(Modifier.height(12.dp))
-
-        TeamButton(
-            "Открыть расписание",
-            onClick = { onNavigate(Routes.SCHEDULE) }
+        KTPrimaryButton(
+            text = "Наши спортсмены",
+            onClick = onAthletes
         )
 
-        Spacer(Modifier.height(20.dp))
-
-        val menu = listOf(
-            "Группы" to Routes.GROUPS,
-            "Абонементы" to Routes.MEMBERSHIPS,
-            "Спортсмены" to Routes.ATHLETES,
-            "Мероприятия" to Routes.EVENTS,
-            "Профиль" to Routes.PROFILE
+        KTOutlinedButton(
+            text = "Абонементы",
+            onClick = onMemberships
         )
 
-        menu.forEach { (title, route) ->
-            TextButton(
-                onClick = { onNavigate(route) }
-            ) {
-                Text(title, color = White)
-            }
-        }
+        KTOutlinedButton(
+            text = "События команды",
+            onClick = onEvents
+        )
+    }
+}
 
-        if (role == UserRole.COACH) {
-            TeamButton("Панель тренера") {
-                onNavigate(Routes.TRAINER)
-            }
-        }
+@Composable
+private fun StatisticCard(
+    value: String,
+    label: String,
+    modifier: Modifier = Modifier
+) {
 
-        if (role == UserRole.ADMIN) {
-            TeamButton("Панель администратора") {
-                onNavigate(Routes.ADMIN)
-            }
+    KTCard(
+        modifier = modifier
+    ) {
+
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Text(
+                text = value,
+                color = KTColors.Primary,
+                style = MaterialTheme.typography.headlineLarge
+            )
+
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodySmall
+            )
         }
     }
 }
