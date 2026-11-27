@@ -1,135 +1,140 @@
-
-package com.khaperskiyteam.presentation.navigation
+package com.example.khaperskiyteam.presentation.navigation
 
 import androidx.compose.runtime.*
-import androidx.navigation.compose.*
-import com.khaperskiyteam.data.model.UserRole
-import com.khaperskiyteam.presentation.screens.*
+import com.example.khaperskiyteam.data.repository.*
+import com.example.khaperskiyteam.presentation.screens.auth.*
+import com.example.khaperskiyteam.presentation.screens.main.*
 
 @Composable
-fun AppNavigation() {
-    val navController = rememberNavController()
+fun AppNavigator() {
 
-    var currentRole by remember {
-        mutableStateOf(UserRole.GUEST)
+    val authRepository = remember {
+        AuthRepository()
     }
 
-    NavHost(
-        navController = navController,
-        startDestination = Routes.WELCOME
-    ) {
+    val membershipRepository = remember {
+        MembershipRepository()
+    }
 
-        composable(Routes.WELCOME) {
+    val athleteRepository = remember {
+        AthleteRepository()
+    }
+
+    val eventRepository = remember {
+        EventRepository()
+    }
+
+    val profileRepository = remember {
+        ProfileRepository()
+    }
+
+    var screen by remember {
+        mutableStateOf(Screen.Splash)
+    }
+
+    var isGuest by remember {
+        mutableStateOf(false)
+    }
+
+    when (screen) {
+
+        Screen.Splash -> {
+            SplashScreen()
+
+            LaunchedEffect(Unit) {
+
+                authRepository.awaitInitialization()
+
+                kotlinx.coroutines.delay(1200)
+
+                screen = if (
+                    authRepository.isAuthenticated()
+                ) {
+                    Screen.Main
+                } else {
+                    Screen.Welcome
+                }
+            }
+        }
+
+        Screen.Welcome -> {
+
             WelcomeScreen(
                 onLogin = {
-                    navController.navigate(Routes.LOGIN)
+                    screen = Screen.Login
                 },
-                onRegister = {
-                    navController.navigate(Routes.REGISTER)
+                onRegistration = {
+                    screen = Screen.Registration
                 },
                 onGuest = {
-                    currentRole = UserRole.GUEST
-                    navController.navigate(Routes.HOME)
+                    isGuest = true
+                    screen = Screen.Main
                 }
             )
         }
 
-        composable(Routes.LOGIN) {
+        Screen.Login -> {
+
             LoginScreen(
-                onLogin = {
-                    currentRole = UserRole.ATHLETE
-                    navController.navigate(Routes.HOME) {
-                        popUpTo(Routes.WELCOME) {
-                            inclusive = true
-                        }
-                    }
+                repository = authRepository,
+                onSuccess = {
+                    isGuest = false
+                    screen = Screen.Main
                 },
-                onRegister = {
-                    navController.navigate(Routes.REGISTER)
+                onBack = {
+                    screen = Screen.Welcome
+                },
+                onRegistration = {
+                    screen = Screen.Registration
                 }
             )
         }
 
-        composable(Routes.REGISTER) {
-            RegisterScreen(
-                onComplete = {
-                    currentRole = UserRole.ATHLETE
-                    navController.navigate(Routes.HOME) {
-                        popUpTo(Routes.WELCOME) {
-                            inclusive = true
-                        }
+        Screen.Registration -> {
+
+            RegistrationScreen(
+                repository = authRepository,
+                onSuccess = {
+                    screen = Screen.RegistrationSuccess
+                },
+                onBack = {
+                    screen = Screen.Welcome
+                }
+            )
+        }
+
+        Screen.RegistrationSuccess -> {
+
+            RegistrationSuccessScreen(
+                onContinue = {
+
+                    isGuest = false
+
+                    screen = if (
+                        authRepository.isAuthenticated()
+                    ) {
+                        Screen.Main
+                    } else {
+                        Screen.Login
                     }
                 }
             )
         }
 
-        composable(Routes.HOME) {
-            HomeScreen(
-                role = currentRole,
-                onNavigate = { route ->
-                    navController.navigate(route)
+        Screen.Main -> {
+
+            MainScreen(
+                isGuest = isGuest,
+                authRepository = authRepository,
+                membershipRepository = membershipRepository,
+                athleteRepository = athleteRepository,
+                eventRepository = eventRepository,
+                profileRepository = profileRepository,
+                onLogout = {
+                    isGuest = false
+                    screen = Screen.Welcome
                 }
             )
-        }
-
-        composable(Routes.SCHEDULE) {
-            ScheduleScreen()
-        }
-
-        composable(Routes.GROUPS) {
-            GroupsScreen()
-        }
-
-        composable(Routes.MEMBERSHIPS) {
-            MembershipsScreen()
-        }
-
-        composable(Routes.ATHLETES) {
-            AthletesScreen()
-        }
-
-        composable(Routes.EVENTS) {
-            EventsScreen()
-        }
-
-        composable(Routes.PROFILE) {
-            ProfileScreen()
-        }
-
-        composable(Routes.TRAINER) {
-            TrainerScreen(
-                onNavigate = { route ->
-                    navController.navigate(route)
-                }
-            )
-        }
-
-        composable(Routes.TRAINER_SCHEDULE) {
-            TrainerScheduleScreen()
-        }
-
-        composable(Routes.EDIT_TRAINING) {
-            EditTrainingScreen()
-        }
-
-        composable(Routes.ATHLETE_BOOKINGS) {
-            AthleteBookingsScreen()
-        }
-
-        composable(Routes.ADMIN) {
-            AdminScreen(
-                onNavigate = { route ->
-                    navController.navigate(route)
-                }
-            )
-        }
-
-        composable(Routes.ADMIN_USERS) {
-            AdminUsersScreen()
-        }
-
-        composable(Routes.ADMIN_GROUPS) {
-            AdminGroupsScreen()
         }
     }
 }
