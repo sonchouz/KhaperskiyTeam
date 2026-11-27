@@ -1,78 +1,83 @@
-package com.example.khaperskiyteam.presentation.components
+package com.example.khaperskiyteam.presentation.components.cards
 
-
-
-
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.example.khaperskiyteam.presentation.components.KTCard
 import com.example.khaperskiyteam.presentation.theme.KTColors
 
 @Composable
 fun AthleteCard(
-    fullName: String,
-    age: Int,
+    name: String,
     belt: String,
     medals: Int,
-    modifier: Modifier = Modifier
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    photo: Painter? = null
 ) {
     KTCard(
-        modifier = modifier,
-        contentPadding = 12.dp
+        modifier = modifier.clickable(onClick = onClick),
+        contentPadding = 0.dp
     ) {
         Row(
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
                 modifier = Modifier
-                    .size(64.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(KTColors.SurfaceVariant),
-                contentAlignment = Alignment.Center
+                    .width(92.dp)
+                    .height(112.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(KTColors.LightGray)
             ) {
-                Text(
-                    text = fullName.firstOrNull()?.uppercase() ?: "?",
-                    color = Color.White,
-                    style = MaterialTheme.typography.headlineMedium
-                )
+                if (photo != null) {
+                    Image(
+                        painter = photo,
+                        contentDescription = name,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                }
             }
 
-            Spacer(Modifier.width(14.dp))
-
             Column(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(14.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 Text(
-                    text = fullName,
-                    color = Color.White,
+                    text = name,
                     style = MaterialTheme.typography.titleMedium
                 )
 
-                Spacer(Modifier.height(5.dp))
-
                 Text(
-                    text = "$age лет • $belt пояс",
-                    color = KTColors.TextSecondary,
-                    style = MaterialTheme.typography.bodySmall
+                    text = belt,
+                    style = MaterialTheme.typography.bodyMedium
                 )
-
-                Spacer(Modifier.height(5.dp))
 
                 Text(
                     text = "🏅 $medals медалей",
-                    color = KTColors.Red,
-                    style = MaterialTheme.typography.labelMedium
+                    style = MaterialTheme.typography.labelLarge
                 )
             }
+
+            Text(
+                text = "›",
+                color = KTColors.Primary,
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.padding(end = 12.dp)
+            )
         }
     }
 }

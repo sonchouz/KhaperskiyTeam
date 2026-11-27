@@ -1,11 +1,14 @@
 package com.example.khaperskiyteam.presentation.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.example.khaperskiyteam.presentation.theme.KTColors
 
@@ -16,25 +19,24 @@ fun KTChip(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    FilterChip(
-        selected = selected,
-        onClick = onClick,
-        modifier = modifier,
-        label = {
-            Text(text)
-        },
-        shape = RoundedCornerShape(10.dp),
-        colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = KTColors.Red,
-            selectedLabelColor = KTColors.White,
-            containerColor = KTColors.SurfaceVariant,
-            labelColor = KTColors.TextSecondary
-        ),
-        border = FilterChipDefaults.filterChipBorder(
-            enabled = true,
-            selected = selected,
-            borderColor = KTColors.Border,
-            selectedBorderColor = KTColors.Red
+    Box(
+        modifier = modifier
+            .height(40.dp)
+            .clip(RoundedCornerShape(50))
+            .background(
+                if (selected)
+                    KTColors.Primary
+                else
+                    KTColors.Border
+            )
+            .clickable(onClick = onClick)
+            .padding(horizontal = 20.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = text,
+            color = KTColors.White,
+            style = MaterialTheme.typography.bodyMedium
         )
-    )
+    }
 }

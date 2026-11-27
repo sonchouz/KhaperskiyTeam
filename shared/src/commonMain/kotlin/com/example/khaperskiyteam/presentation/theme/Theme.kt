@@ -5,23 +5,22 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 
 private val KTColorScheme = darkColorScheme(
-
-    primary = KTColors.Red,
+    primary = KTColors.Primary,
     onPrimary = KTColors.White,
 
-    secondary = KTColors.TextSecondary,
-    onSecondary = KTColors.Black,
+    secondary = KTColors.PrimaryDark,
+    onSecondary = KTColors.White,
 
     background = KTColors.Background,
-    onBackground = KTColors.TextPrimary,
+    onBackground = KTColors.White,
 
     surface = KTColors.Surface,
-    onSurface = KTColors.TextPrimary,
+    onSurface = KTColors.White,
 
-    surfaceVariant = KTColors.SurfaceVariant,
-    onSurfaceVariant = KTColors.TextSecondary,
+    surfaceVariant = KTColors.Border,
+    onSurfaceVariant = KTColors.Muted,
 
-    outline = KTColors.Border,
+    outline = KTColors.Muted,
 
     error = KTColors.Error,
     onError = KTColors.White

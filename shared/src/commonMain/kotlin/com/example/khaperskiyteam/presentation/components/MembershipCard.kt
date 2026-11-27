@@ -1,71 +1,88 @@
 package com.example.khaperskiyteam.presentation.components
 
-
-
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.example.khaperskiyteam.presentation.components.KTCard
 import com.example.khaperskiyteam.presentation.theme.KTColors
 
 @Composable
 fun MembershipCard(
     name: String,
-    lessonsCount: Int,
-    validity: String,
     price: String,
-    modifier: Modifier = Modifier
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    background: Painter? = null,
+    logo: Painter? = null
 ) {
-    KTCard(
-        modifier = modifier,
-        contentPadding = 0.dp
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(140.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(KTColors.LightGray)
+            .clickable(onClick = onClick)
     ) {
-        Column(
+        if (background != null) {
+            Image(
+                painter = background,
+                contentDescription = null,
+                modifier = Modifier.matchParentSize(),
+                contentScale = ContentScale.Crop
+            )
+        }
+
+        Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .background(KTColors.SurfaceVariant)
-                .padding(20.dp)
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "KHAPERSKIY TEAM",
-                color = KTColors.Red,
-                style = MaterialTheme.typography.labelLarge
-            )
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = name.uppercase(),
+                    color = KTColors.Black,
+                    style = MaterialTheme.typography.titleLarge
+                )
 
-            Spacer(Modifier.height(18.dp))
+                Spacer(Modifier.height(10.dp))
 
-            Text(
-                text = name,
-                color = Color.White,
-                style = MaterialTheme.typography.headlineSmall
-            )
+                Box(
+                    modifier = Modifier
+                        .background(KTColors.PrimaryDark)
+                        .padding(
+                            horizontal = 16.dp,
+                            vertical = 5.dp
+                        )
+                ) {
+                    Text(
+                        text = price,
+                        color = KTColors.White,
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                }
+            }
 
-            Spacer(Modifier.height(12.dp))
-
-            Text(
-                text = "$lessonsCount тренировок",
-                color = Color.White
-            )
-
-            Text(
-                text = "Срок действия: $validity",
-                color = KTColors.TextSecondary
-            )
-
-            Spacer(Modifier.height(20.dp))
-
-            Text(
-                text = price,
-                color = KTColors.Red,
-                style = MaterialTheme.typography.headlineMedium
-            )
+            if (logo != null) {
+                Image(
+                    painter = logo,
+                    contentDescription = "Khaperskiy Team",
+                    modifier = Modifier.size(100.dp),
+                    contentScale = ContentScale.Fit
+                )
+            }
         }
     }
 }

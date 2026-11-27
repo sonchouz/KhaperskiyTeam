@@ -1,18 +1,12 @@
-package com.example.khaperskiyteam.presentation.components
+package com.example.khaperskiyteam.presentation.components.cards
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.khaperskiyteam.presentation.theme.KTColors
+import com.example.khaperskiyteam.presentation.components.*
+import com.example.khaperskiyteam.presentation.theme.*
 
 @Composable
 fun TrainingCard(
@@ -20,54 +14,61 @@ fun TrainingCard(
     time: String,
     title: String,
     coach: String,
-    group: String,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit = {}
+    places: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     KTCard(
         modifier = modifier,
-        contentPadding = 16.dp
+        backgroundColor = KTColors.White
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = date,
-                color = KTColors.TextSecondary,
+                text = date.uppercase(),
+                color = KTColors.Primary,
                 style = MaterialTheme.typography.bodySmall
             )
 
             Text(
-                text = group,
-                color = KTColors.Red,
-                style = MaterialTheme.typography.labelMedium
+                text = places,
+                color = KTColors.Black,
+                style = MaterialTheme.typography.bodySmall
             )
         }
 
         Spacer(Modifier.height(12.dp))
 
-        Text(
-            text = time,
-            color = Color.White,
-            style = MaterialTheme.typography.headlineMedium
-        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = time,
+                color = KTColors.Black,
+                style = MaterialTheme.typography.titleSmall
+            )
 
-        Spacer(Modifier.height(4.dp))
-
-        Text(
-            text = title,
-            color = Color.White,
-            style = MaterialTheme.typography.titleMedium
-        )
+            Text(
+                text = title,
+                color = KTColors.Black
+            )
+        }
 
         Spacer(Modifier.height(8.dp))
 
         Text(
             text = "Тренер: $coach",
-            color = KTColors.TextSecondary,
+            color = KTColors.Muted,
             style = MaterialTheme.typography.bodySmall
+        )
+
+        Spacer(Modifier.height(16.dp))
+
+        KTPrimaryButton(
+            text = "Подробнее",
+            onClick = onClick
         )
     }
 }

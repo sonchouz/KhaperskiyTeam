@@ -1,17 +1,12 @@
 package com.example.khaperskiyteam.presentation.components
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.khaperskiyteam.presentation.theme.KTColors
-import com.example.khaperskiyteam.presentation.theme.KTDimens
+import com.example.khaperskiyteam.presentation.theme.*
 
 @Composable
 fun KTPrimaryButton(
@@ -22,22 +17,21 @@ fun KTPrimaryButton(
 ) {
     Button(
         onClick = onClick,
+        enabled = enabled,
         modifier = modifier
             .fillMaxWidth()
             .height(KTDimens.ButtonHeight),
-        enabled = enabled,
         shape = RoundedCornerShape(KTDimens.ButtonRadius),
         colors = ButtonDefaults.buttonColors(
-            containerColor = KTColors.Red,
+            containerColor = KTColors.Primary,
             contentColor = KTColors.White,
-            disabledContainerColor = KTColors.SurfaceVariant,
-            disabledContentColor = KTColors.TextDisabled
+            disabledContainerColor = KTColors.Border,
+            disabledContentColor = KTColors.Muted
         )
     ) {
         Text(
             text = text,
-            style = androidx.compose.material3.MaterialTheme
-                .typography.labelLarge
+            style = MaterialTheme.typography.labelLarge
         )
     }
 }
@@ -51,16 +45,24 @@ fun KTOutlinedButton(
 ) {
     OutlinedButton(
         onClick = onClick,
+        enabled = enabled,
         modifier = modifier
             .fillMaxWidth()
             .height(KTDimens.ButtonHeight),
-        enabled = enabled,
         shape = RoundedCornerShape(KTDimens.ButtonRadius),
+        border = BorderStroke(
+            width = KTDimens.SpaceXS / 4,
+            color = if (enabled)
+                KTColors.Primary
+            else
+                KTColors.Border
+        ),
         colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = KTColors.White
+            contentColor = KTColors.White,
+            disabledContentColor = KTColors.Muted
         )
     ) {
-        Text(text = text)
+        Text(text)
     }
 }
 
@@ -68,15 +70,18 @@ fun KTOutlinedButton(
 fun KTTextButton(
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
     TextButton(
         onClick = onClick,
-        modifier = modifier
-    ) {
-        Text(
-            text = text,
-            color = KTColors.Red
+        enabled = enabled,
+        modifier = modifier,
+        colors = ButtonDefaults.textButtonColors(
+            contentColor = KTColors.Primary,
+            disabledContentColor = KTColors.Muted
         )
+    ) {
+        Text(text)
     }
 }

@@ -1,55 +1,71 @@
-package com.example.khaperskiyteam.presentation.components
+package com.example.khaperskiyteam.presentation.components.cards
 
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import com.example.khaperskiyteam.presentation.components.KTCard
 import com.example.khaperskiyteam.presentation.theme.KTColors
 
 @Composable
 fun GroupCard(
     name: String,
-    ageCategory: String,
-    coach: String,
     schedule: String,
-    modifier: Modifier = Modifier
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    photo: Painter? = null
 ) {
     KTCard(
-        modifier = modifier,
-        contentPadding = 16.dp
+        modifier = modifier.clickable(onClick = onClick),
+        backgroundColor = KTColors.White,
+        contentPadding = 0.dp
     ) {
-        Text(
-            text = name,
-            color = Color.White,
-            style = MaterialTheme.typography.titleLarge
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .width(120.dp)
+                    .height(120.dp)
+                    .background(KTColors.LightGray)
+            ) {
+                if (photo != null) {
+                    Image(
+                        painter = photo,
+                        contentDescription = name,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+            }
 
-        Spacer(Modifier.height(8.dp))
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(12.dp)
+            ) {
+                Text(
+                    text = name,
+                    color = KTColors.Black,
+                    style = MaterialTheme.typography.titleSmall
+                )
 
-        Text(
-            text = ageCategory,
-            color = KTColors.Red,
-            style = MaterialTheme.typography.labelMedium
-        )
+                Spacer(Modifier.height(8.dp))
 
-        Spacer(Modifier.height(12.dp))
-
-        Text(
-            text = "Тренер: $coach",
-            color = KTColors.TextSecondary
-        )
-
-        Spacer(Modifier.height(6.dp))
-
-        Text(
-            text = schedule,
-            color = Color.White
-        )
-
-
+                Text(
+                    text = schedule,
+                    color = KTColors.Muted,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+        }
     }
 }

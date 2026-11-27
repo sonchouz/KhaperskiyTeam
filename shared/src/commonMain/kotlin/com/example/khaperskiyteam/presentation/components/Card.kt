@@ -1,34 +1,34 @@
-
 package com.example.khaperskiyteam.presentation.components
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.khaperskiyteam.presentation.theme.KTColors
-import com.example.khaperskiyteam.presentation.theme.KTDimens
+import com.example.khaperskiyteam.presentation.theme.*
 
 @Composable
 fun KTCard(
     modifier: Modifier = Modifier,
     backgroundColor: Color = KTColors.Card,
-    cornerRadius: Dp = KTDimens.CardRadius,
     contentPadding: Dp = KTDimens.CardPadding,
+    cornerRadius: Dp = KTDimens.CardRadius,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(cornerRadius),
         colors = CardDefaults.cardColors(
-            containerColor = backgroundColor
+            containerColor = backgroundColor,
+            contentColor =
+                if (
+                    backgroundColor == KTColors.White ||
+                    backgroundColor == KTColors.LightGray
+                ) KTColors.Black
+                else KTColors.White
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 0.dp

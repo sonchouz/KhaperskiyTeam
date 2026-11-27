@@ -3,43 +3,23 @@ package com.example.khaperskiyteam.presentation.theme
 import androidx.compose.ui.unit.dp
 
 object KTDimens {
-
-    // Spacing
-    val Space2 = 2.dp
-    val Space4 = 4.dp
-    val Space8 = 8.dp
-    val Space12 = 12.dp
-    val Space16 = 16.dp
-    val Space20 = 20.dp
-    val Space24 = 24.dp
-    val Space32 = 32.dp
-    val Space40 = 40.dp
-
-    // Screen
-    val ScreenPadding = 20.dp
-
-    // Buttons
-    val ButtonHeight = 52.dp
-    val ButtonRadius = 12.dp
-
-    // Text fields
-    val TextFieldHeight = 56.dp
-    val TextFieldRadius = 12.dp
-
-    // Cards
-    val CardRadius = 16.dp
+    val ScreenPadding = 24.dp
     val CardPadding = 16.dp
 
-    // Navigation
-    val BottomBarHeight = 72.dp
+    val SpaceXS = 4.dp
+    val SpaceS = 8.dp
+    val SpaceM = 12.dp
+    val SpaceL = 16.dp
+    val SpaceXL = 24.dp
+    val SpaceXXL = 32.dp
 
-    // Icons
-    val IconSmall = 16.dp
-    val IconMedium = 24.dp
-    val IconLarge = 32.dp
+    val ButtonHeight = 44.dp
+    val InputHeight = 56.dp
 
-    // Avatars
-    val AvatarSmall = 40.dp
-    val AvatarMedium = 56.dp
-    val AvatarLarge = 88.dp
+    val ButtonRadius = 10.dp
+    val InputRadius = 10.dp
+    val CardRadius = 10.dp
+
+    val IconSize = 24.dp
+    val AvatarSize = 80.dp
 }
