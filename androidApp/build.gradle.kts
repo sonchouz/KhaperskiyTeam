@@ -56,9 +56,11 @@ dependencies {
 
     // Core
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.ui.tooling.preview)
 
     // Compose UI
     implementation(libs.compose.runtime)
     implementation(libs.compose.ui)
     implementation(libs.compose.material3)
+    debugImplementation(libs.androidx.ui.tooling)
 }
